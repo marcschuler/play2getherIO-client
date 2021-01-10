@@ -1,0 +1,53 @@
+.container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+.container a {
+  text-decoration: none;
+}
+
+
+.grad01 {
+  background: linear-gradient(271deg, #f1c40f, #420d46);
+  background-size: 400% 400%;
+
+  -webkit-animation: gradient01 29s ease infinite;
+  -moz-animation: gradient01 29s ease infinite;
+  animation: gradient01 29s ease infinite;
+}
+
+@-webkit-keyframes gradient01 {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@-moz-keyframes gradient01 {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes gradient01 {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}

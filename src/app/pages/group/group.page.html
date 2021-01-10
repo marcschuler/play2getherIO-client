@@ -1,0 +1,65 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button [defaultHref]="'/'"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Play<span [ngStyle]="colorStyle">2</span>Gether.io</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div *ngIf="!group" class="ion-align-items-center">
+        <div style="height: 100px"></div>
+        <ion-spinner></ion-spinner>
+    </div>
+
+    <ion-grid *ngIf="group">
+        <ion-row>
+            <ion-col *ngFor="let profile of group.profiles" size="auto" style="margin-top: 20px">
+                <img [src]="profile.profileImageUrl" [title]="profile.nickname" (click)="remoteFriend(profile.id)" style="height:48px;width:48px">
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12" sizeXl="6">
+                <ion-item>
+                    <ion-label>Add another Friend</ion-label>
+                    <ion-input [(ngModel)]="friendInput" placeholder="Steam Nickname / Profile URL / ID"
+                               (submit)="addFriend()" (keyup.enter)="addFriend()"></ion-input>
+                    <ion-button (click)="addFriend()">
+                        <ion-icon *ngIf="!friendAwaiting" name="add-circle-outline"></ion-icon>
+                        <ion-spinner *ngIf="friendAwaiting"></ion-spinner>
+                    </ion-button>
+                </ion-item>
+            </ion-col>
+            <ion-col size="12" sizeXl="6">
+                <ion-item>
+                    <ion-label>Share the Link</ion-label>
+                    <ion-input [disabled]="true" [(ngModel)]="url" (click)="copyLink()"></ion-input>
+                    <ion-button (click)="copyLink()">
+                        <ion-icon name="clipboard-outline"></ion-icon>
+                    </ion-button>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <img *ngFor="let profile of group.friendsSuggestions" [src]="profile.profileImageUrl" [title]="profile.nickname" (click)="addFriendById(profile.id)" style="height:48px;width:48px">
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-item-divider></ion-item-divider>
+    <ion-card *ngIf="gameList.length>0 && (gameList[0].players != group.profiles.length)" color="warning">
+        <ion-card-content>
+            <ion-icon name="warning-outline" style="font-size: 20px"></ion-icon>
+            There is no game that everyone owns. At least {{group.profiles.length - gameList[0].players}} person can't play with you or has to buy the game.</ion-card-content>
+    </ion-card>
+    <app-game-item *ngFor="let item of gameList | slice:0:showNumber" [data]="group" [item]="item"></app-game-item>
+    <ion-button *ngIf="showNumber<gameList.length" (click)="showNumber=showNumber+25" expand="full">
+        <ion-icon name="chevron-down-outline"></ion-icon>
+        Show More</ion-button>
+
+</ion-content>
+
+<app-footer></app-footer>
