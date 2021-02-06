@@ -8,6 +8,7 @@ import { GroupPageRoutingModule } from './group-routing.module';
 
 import { GroupPage } from './group.page';
 import {ComponentsModule} from "../../components/components.module";
+import {TooltipsModule} from "ionic4-tooltips";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {ComponentsModule} from "../../components/components.module";
         FormsModule,
         IonicModule,
         GroupPageRoutingModule,
-        ComponentsModule
+        ComponentsModule,
+        TooltipsModule.forRoot()
     ],
   declarations: [GroupPage]
 })

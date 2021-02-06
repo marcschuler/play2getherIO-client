@@ -11,12 +11,14 @@ import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from "@angular/common/http";
 import {IonicStorageModule} from "@ionic/storage";
 import {ClipboardModule} from "ngx-clipboard";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
     imports: [BrowserModule, IonicModule.forRoot(),
         AppRoutingModule, HttpClientModule, IonicStorageModule.forRoot(),
+        BrowserAnimationsModule,
         ClipboardModule],
     providers: [
         StatusBar,

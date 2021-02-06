@@ -10,16 +10,16 @@
 
 
     <div class="grad01">
-        <div style="height: 200px;">
-
+        <div style="height: 200px;width:100%">
+            <ion-icon style="font-size: 144px;width:100%; margin-top: 30px" name="game-controller-outline"></ion-icon>
         </div>
 
         <div *ngIf="!groupAwaiting" style="width:100%;background-color: #00000088" class="ion-text-center ion-padding">
             <!--<strong>Ready to create an app?</strong>
             <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
-            <p>Enter your steam username to get started</p>
+            <p style="color:#888">Enter your steam username to get started</p>
             <ion-input placeholder="Steam Nickname / Profile URL / ID" [(ngModel)]="steamId" minlength="3"
-                       (keydown.enter)="createGroup()"></ion-input>
+                       (keydown.enter)="createGroup()" style="color:#888"></ion-input>
             <ion-button (click)="createGroup()">Check Games</ion-button>
         </div>
     </div>
@@ -28,12 +28,24 @@
         <ion-spinner></ion-spinner>
     </div>
 
-    <h4>FAQ</h4>
-    <h6>Q: What ID do I need to input?</h6>
-    <h6>Q: The games of a user won't show up</h6>
-    <p>Please make sure that your steam profile is <a
-            href="https://plair.zendesk.com/hc/en-us/articles/360019111173-Set-Steam-Account-Public" target="_blank">public</a>
-    </p>
+
+    <div style="margin:50px">
+        <h3>FAQ</h3>
+        <h5>Q: What ID do I need to input?</h5>
+        <p>We accept the following steam names</p>
+        <ul>
+            <li>Steam username: <span style="opacity: .5">karlthebee</span></li>
+            <li>Profile URL: <span style="opacity: .5">https://steamcommunity.com/id/KarlTheBee</span></li>
+            <li>Steam ID: <span style="opacity: .5">76561198065241640</span></li>
+        </ul>
+        <br><br>
+        <h5>Q: My user profile is private</h5>
+        <p>Please make sure that your <a
+                href="https://plair.zendesk.com/hc/en-us/articles/360019111173-Set-Steam-Account-Public"
+                target="_blank">steam profile is public</a>
+        </p>
+        <br><br>
+    </div>
 
 </ion-content>
 

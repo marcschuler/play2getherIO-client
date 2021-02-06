@@ -8,14 +8,27 @@
             <img [src]="'https://cdn.cloudflare.steamstatic.com/steam/apps/'+item.game.id+'/header.jpg'">
         </ion-col>
         <ion-col size="7">
-            <h2><a [href]="'https://store.steampowered.com/app/' + item.game.id" target="_blank" style="text-decoration: none;color:var(--ion-text-color)">{{item.game.name}}</a></h2>
+            <h2><a [href]="'https://store.steampowered.com/app/' + item.game.id" target="_blank"
+                   style="text-decoration: none;color:var(--ion-text-color)">{{item.game.name}}</a></h2>
             <span *ngFor="let p of profiles">
-                <a [href]="p.profileUrl" target="_blank"> <img [src]="p.profileImageUrl" [title]="p.nickname"
-                                                               style="width: 32px;height: 32px"></a></span>
+                <a [href]="p.profileUrl" target="_blank" [tooltip]="p.nickname" navTooltip> <img
+                        [src]="p.profileImageUrl"
+                        style="width: 32px;height: 32px"></a></span>
+            <ion-icon *ngIf="profilesExcluded.length>0" name="close-circle-outline" style="margin-left: 40px;font-size: 32px" color="danger" tooltip="The following user(s) don't have this game" navTooltip></ion-icon>
+            <span *ngFor="let p of profilesExcluded">
+                <a [href]="p.profileUrl" target="_blank" [tooltip]="p.nickname" navTooltip> <img
+                        [src]="p.profileImageUrl"
+                        style="width: 32px;height: 32px"></a>
+            </span>
         </ion-col>
         <ion-col size="2">
-            <ion-button [href]="'steam://run/' + item.game.id" fill="outline" size="small" expand="full">
-                <ion-icon name="play-circle-outline"></ion-icon> Launch Game
+            <ion-button [href]="'steam://run/' + item.game.id" fill="clear" expand="full">
+                <ion-icon name="play-circle-outline" slot="start"></ion-icon>
+                Launch Game
+            </ion-button>
+            <ion-button [href]="'https://store.steampowered.com/app/' + item.game.id" expand="full" fill="clear">
+                <ion-icon name="basket-outline" slot="start"></ion-icon>
+                Shop page
             </ion-button>
         </ion-col>
     </ion-row>

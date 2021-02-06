@@ -13,6 +13,7 @@ export class GameItemComponent implements OnInit, OnChanges {
     @Input() item: GameListItem;
 
     profiles: Profile[];
+    profilesExcluded: Profile[];
 
     colorStyle: any;
 
@@ -21,6 +22,7 @@ export class GameItemComponent implements OnInit, OnChanges {
 
     private update() {
         this.profiles = this.data.profiles.filter(profile => profile.ownedGameIds.indexOf(this.item.game.id) != -1);
+        this.profilesExcluded = this.data.profiles.filter(p => this.profiles.indexOf(p)==-1);
         const colorId = Math.min(this.item.players, this.colorService.COLORS.length) - 1;
         this.colorStyle = {'background-color':this.colorService.COLORS[colorId] };
     }

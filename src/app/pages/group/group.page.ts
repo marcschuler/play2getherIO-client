@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GameListItem, WebDto, WebService} from "../../services/web.service";
+import {GameListItem, Profile, WebDto, WebService} from "../../services/web.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorService} from "../../services/error.service";
 import {ClipboardService} from "ngx-clipboard";
@@ -15,12 +15,14 @@ export class GroupPage implements OnInit {
 
     id: string;
     group: WebDto;
+    friendSuggestions: Profile[];
 
     gameList: GameListItem[] = [];
     url = window.location.href;
 
     friendInput: string = "";
     friendAwaiting = false;
+    suggestionsAwaiting = false;
 
     showNumber = 25;
     colorStyle: any = {};
@@ -31,7 +33,7 @@ export class GroupPage implements OnInit {
                 private router: Router) {
     }
 
-    addFriendById(fid:string){
+    addFriendById(fid: string) {
         this.webService.addFriend(this.id, fid).subscribe(data => {
             this.updateData(data);
         }, error => {
@@ -67,14 +69,14 @@ export class GroupPage implements OnInit {
         this.webService.getGroup(this.id).subscribe(data => {
             this.updateData(data);
             this.liveUpdate();
-        }, error=>this.onNetworkError(error));
+        }, error => this.onNetworkError(error));
     }
 
     private liveUpdate() {
         this.webService.getGroupLive(this.id, this.group ? this.group.version : -1).subscribe(data => {
             this.updateData(data);
             this.liveUpdate();
-        }, error=>this.onNetworkError(error));
+        }, error => this.onNetworkError(error));
     }
 
     private onNetworkError(error) {
@@ -85,7 +87,7 @@ export class GroupPage implements OnInit {
                 buttons: [
                     {
                         text: 'Retry',
-                        handler: ()=>this.liveUpdate()
+                        handler: () => this.liveUpdate()
                     }, {
                         text: 'Back',
                         handler: () => this.router.navigateByUrl('/')
@@ -103,7 +105,14 @@ export class GroupPage implements OnInit {
             console.log("No data changes");
             return;
         }
+        if (data == undefined) {
+            console.log('Data is undefined');
+            return;
+        }
         this.group = data;
+
+        this.updateSuggestions();
+
 
         const gameList: GameListItem[] = [];
         this.group.profiles.forEach(profile => {
@@ -116,6 +125,18 @@ export class GroupPage implements OnInit {
         const colorId = Math.min(gameList[0].players, this.colorService.COLORS.length) - 1;
         this.colorStyle = {'color': this.colorService.COLORS[colorId]};
         this.gameList = gameList;
+    }
+
+    private updateSuggestions() {
+        this.suggestionsAwaiting = true;
+        this.webService.getSuggestions(this.id).subscribe(value => {
+            this.friendSuggestions = value;
+            this.suggestionsAwaiting = false;
+        }, error => {
+            this.suggestionsAwaiting = false;
+            this.errorService.onNetworkError(error, 'Could not get friend list');
+            setTimeout(this.updateSuggestions, 4000)
+        });
     }
 
     private addEntry(list: GameListItem[], gameid) {
@@ -139,7 +160,11 @@ export class GroupPage implements OnInit {
     }
 
 
-    remoteFriend(fid: string) {
+    removeFriend(fid: string) {
+        if (this.group.profiles.length <= 1){
+            this.errorService.onError('Could not remove profile','You need at least one profile...')
+            return;
+        }
         this.webService.removeFriend(this.id, fid).subscribe(() => {
         }, error => this.errorService.onNetworkError(error));
     }

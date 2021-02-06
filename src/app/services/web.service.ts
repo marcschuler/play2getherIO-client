@@ -6,8 +6,9 @@ import {Observable} from "rxjs";
     providedIn: 'root'
 })
 export class WebService {
+    BASE_URL = "https://play2gether.io/api/v1/groups"
 
-    BASE_URL = "http://localhost:8080/v1/groups"
+    // BASE_URL = "http://localhost:8080/v1/groups"
 
     constructor(private httpClient: HttpClient) {
     }
@@ -24,14 +25,18 @@ export class WebService {
         return this.httpClient.get<WebDto>(this.BASE_URL + "/" + id + '/live/' + version);
     }
 
-    addFriend(gid: string, fid: string): Observable<WebDto> {
+    public addFriend(gid: string, fid: string): Observable<WebDto> {
         return this.httpClient.post<WebDto>(this.BASE_URL + "/" + gid + "/friends/", {
             profile: fid
         });
     }
 
-    removeFriend(gid: string, fid: string) {
+    public removeFriend(gid: string, fid: string) {
         return this.httpClient.delete<WebDto>(this.BASE_URL + "/" + gid + "/friends/" + fid);
+    }
+
+    public getSuggestions(gid: string) {
+        return this.httpClient.get<Profile[]>(this.BASE_URL + '/' + gid + '/friends/suggestions')
     }
 }
 
@@ -39,7 +44,6 @@ export interface WebDto {
     id: string;
     profiles: Profile[];
     games: Game[];
-    friendsSuggestions: Profile[];
     version: number;
 }
 
