@@ -67,7 +67,7 @@
     <ion-item-divider></ion-item-divider>
 
     <!-- Warning Status -->
-    <ion-card *ngIf="gameList.length>0 && (gameList[0].players != group.profiles.length)" color="warning">
+    <ion-card *ngIf="gameList.length>0 && (gameList[0].players < group.profiles.length)" color="warning">
         <ion-card-content>
             <ion-icon name="warning-outline" style="font-size: 20px"></ion-icon>
             There is no game that everyone owns. At least {{group.profiles.length - gameList[0].players}} person can't
