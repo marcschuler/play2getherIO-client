@@ -1,6 +1,7 @@
 FROM node:14 as builder
 COPY package.json package-lock.json ./
 RUN npm install -g
+RUN npm install -g ionic
 RUN ionic build --prod
 COPY www/* ./
 
