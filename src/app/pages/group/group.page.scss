@@ -1,16 +1,16 @@
-.image-container{
+.image-container {
   position: relative;
   width: 48px;
   height: 48px;
 }
 
-.image{
+.image {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.plus-button{
+.plus-button {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -23,6 +23,10 @@
   background-color: #f1c4088f;
 }
 
-.image-container:hover .plus-button{
+.image-container:hover .plus-button {
   opacity: 1;
+}
+
+.image:hover {
+  filter: blur(4px);
 }

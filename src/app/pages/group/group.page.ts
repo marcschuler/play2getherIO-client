@@ -1,15 +1,43 @@
 import {Component, OnInit} from '@angular/core';
-import {GameListItem, Profile, WebDto, WebService} from "../../services/web.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ErrorService} from "../../services/error.service";
-import {ClipboardService} from "ngx-clipboard";
-import {ColorService} from "../../services/color.service";
-import {AlertController} from "@ionic/angular";
+import {GameListItem, Profile, WebDto, WebService} from '../../services/web.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ErrorService} from '../../services/error.service';
+import {ClipboardService} from 'ngx-clipboard';
+import {ColorService} from '../../services/color.service';
+import {AlertController} from '@ionic/angular';
+import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
 
 @Component({
     selector: 'app-group',
     templateUrl: './group.page.html',
     styleUrls: ['./group.page.scss'],
+
+    animations: [
+        trigger('profileList', [
+            transition(':enter', [
+                query('@profileItems', stagger(300, animateChild()))
+            ]),
+        ]),
+        trigger('profileItems', [
+            transition('* <=> *', [
+
+                query(':enter', [
+                    style({transform: 'scale(0.5)', opacity: 0}),  // initial
+                    animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
+                        style({transform: 'scale(1)', opacity: 1}))  // final
+                ]),
+
+                query(':leave', [
+                    style({transform: 'scale(1)', opacity: 1, height: '*'}),
+                    animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
+                        style({
+                            transform: 'scale(0.5)', opacity: 0,
+                            height: '0px', margin: '0px'
+                        }))
+                ])
+            ])
+        ])
+    ]
 })
 export class GroupPage implements OnInit {
 
@@ -20,7 +48,7 @@ export class GroupPage implements OnInit {
     gameList: GameListItem[] = [];
     url = window.location.href;
 
-    friendInput: string = "";
+    friendInput: string = '';
     friendAwaiting = false;
     suggestionsAwaiting = false;
 
@@ -34,6 +62,11 @@ export class GroupPage implements OnInit {
     }
 
     addFriendById(fid: string) {
+        // Remove on clientside
+        const profile = this.friendSuggestions.filter(p => p.id === fid)[0];
+        this.friendSuggestions.splice(this.friendSuggestions.indexOf(profile), 1);
+
+
         this.webService.addFriend(this.id, fid).subscribe(data => {
             this.updateData(data);
         }, error => {
@@ -42,15 +75,17 @@ export class GroupPage implements OnInit {
     }
 
     addFriend() {
-        if (this.friendAwaiting)
+        if (this.friendAwaiting) {
             return;
-        if (this.friendInput.length < 3)
+        }
+        if (this.friendInput.length < 3) {
             this.errorService.onError('Wrong Input', 'The Steam Username or ID must at least have 3 characters');
+        }
 
         this.friendAwaiting = true;
         this.webService.addFriend(this.id, this.friendInput).subscribe(data => {
             this.updateData(data);
-            this.friendInput = "";
+            this.friendInput = '';
             this.friendAwaiting = false;
         }, error => {
             this.errorService.onNetworkError(error);
@@ -59,12 +94,12 @@ export class GroupPage implements OnInit {
     }
 
     copyLink() {
-        this.clipboardService.copy(this.url)
-        this.errorService.onError('Copied to Clipboard', '')
+        this.clipboardService.copy(this.url);
+        this.errorService.onError('Copied to Clipboard', '');
     }
 
     ngOnInit() {
-        this.id = this.route.snapshot.paramMap.get("gid");
+        this.id = this.route.snapshot.paramMap.get('gid');
 
         this.webService.getGroup(this.id).subscribe(data => {
             this.updateData(data);
@@ -102,7 +137,7 @@ export class GroupPage implements OnInit {
 
     private updateData(data: WebDto) {
         if (data == this.group) {
-            console.log("No data changes");
+            console.log('No data changes');
             return;
         }
         if (data == undefined) {
@@ -118,9 +153,9 @@ export class GroupPage implements OnInit {
         this.group.profiles.forEach(profile => {
             profile.ownedGameIds.forEach(gameid => {
                 this.addEntry(gameList, gameid);
-            })
+            });
         });
-        gameList.sort((g1, g2) => g2.players - g1.players)
+        gameList.sort((g1, g2) => g2.players - g1.players);
 
         const colorId = Math.min(gameList[0].players, this.colorService.COLORS.length) - 1;
         this.colorStyle = {'color': this.colorService.COLORS[colorId]};
@@ -135,7 +170,7 @@ export class GroupPage implements OnInit {
         }, error => {
             this.suggestionsAwaiting = false;
             this.errorService.onNetworkError(error, 'Could not get friend list');
-            setTimeout(this.updateSuggestions, 4000)
+            setTimeout(this.updateSuggestions, 4000);
         });
     }
 
@@ -146,12 +181,12 @@ export class GroupPage implements OnInit {
                 entry.players += 1;
                 found = true;
             }
-        })
+        });
         if (!found) {
             list.push({
                 players: 1,
                 game: this.getGameFromGid(gameid)
-            })
+            });
         }
     }
 
@@ -161,10 +196,15 @@ export class GroupPage implements OnInit {
 
 
     removeFriend(fid: string) {
-        if (this.group.profiles.length <= 1){
-            this.errorService.onError('Could not remove profile','You need at least one profile...')
+        if (this.group.profiles.length <= 1) {
+            this.errorService.onError('Could not remove profile', 'You need at least one profile...');
             return;
         }
+
+        // Remove on clientside
+        const profile = this.group.profiles.filter(p => p.id === fid)[0];
+        this.group.profiles.splice(this.group.profiles.indexOf(profile), 1);
+
         this.webService.removeFriend(this.id, fid).subscribe(() => {
         }, error => this.errorService.onNetworkError(error));
     }

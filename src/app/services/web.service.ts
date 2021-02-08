@@ -1,16 +1,21 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WebService {
-    BASE_URL = "https://play2gether.io/api/v1/groups"
+
+    BASE_URL = '/api/v1/groups';
 
     // BASE_URL = "http://localhost:8080/v1/groups"
 
     constructor(private httpClient: HttpClient) {
+        if (!location.host.includes('play2gether.io')) {
+            this.BASE_URL = 'https://play2gether.io' + this.BASE_URL;
+            console.log('Activated Dev-Mode for ' + this.BASE_URL);
+        }
     }
 
     public createGroup(groupSetupDto: GroupSetupDto): Observable<WebDto> {
@@ -18,25 +23,25 @@ export class WebService {
     }
 
     public getGroup(id: string): Observable<WebDto> {
-        return this.httpClient.get<WebDto>(this.BASE_URL + "/" + id);
+        return this.httpClient.get<WebDto>(this.BASE_URL + '/' + id);
     }
 
     public getGroupLive(id: string, version: number): Observable<WebDto> {
-        return this.httpClient.get<WebDto>(this.BASE_URL + "/" + id + '/live/' + version);
+        return this.httpClient.get<WebDto>(this.BASE_URL + '/' + id + '/live/' + version);
     }
 
     public addFriend(gid: string, fid: string): Observable<WebDto> {
-        return this.httpClient.post<WebDto>(this.BASE_URL + "/" + gid + "/friends/", {
+        return this.httpClient.post<WebDto>(this.BASE_URL + '/' + gid + '/friends/', {
             profile: fid
         });
     }
 
     public removeFriend(gid: string, fid: string) {
-        return this.httpClient.delete<WebDto>(this.BASE_URL + "/" + gid + "/friends/" + fid);
+        return this.httpClient.delete<WebDto>(this.BASE_URL + '/' + gid + '/friends/' + fid);
     }
 
     public getSuggestions(gid: string) {
-        return this.httpClient.get<Profile[]>(this.BASE_URL + '/' + gid + '/friends/suggestions')
+        return this.httpClient.get<Profile[]>(this.BASE_URL + '/' + gid + '/friends/suggestions');
     }
 }
 
