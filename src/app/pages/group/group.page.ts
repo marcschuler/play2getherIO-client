@@ -204,7 +204,6 @@ export class GroupPage implements OnInit {
         // Remove on clientside
         const profile = this.group.profiles.filter(p => p.id === fid)[0];
         this.group.profiles.splice(this.group.profiles.indexOf(profile), 1);
-
         this.webService.removeFriend(this.id, fid).subscribe(() => {
         }, error => this.errorService.onNetworkError(error));
     }
