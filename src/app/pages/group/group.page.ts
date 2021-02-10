@@ -206,6 +206,6 @@ export class GroupPage implements OnInit {
         this.group.profiles.splice(this.group.profiles.indexOf(profile), 1);
         this.webService.removeFriend(this.id, fid).subscribe(() => {
         }, error => this.errorService.onNetworkError(error));
-    }
+    } 
 }
 
