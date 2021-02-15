@@ -5,7 +5,7 @@ import {ErrorService} from '../../services/error.service';
 import {ClipboardService} from 'ngx-clipboard';
 import {ColorService} from '../../services/color.service';
 import {AlertController} from '@ionic/angular';
-import {animate, animateChild, query, stagger, style, transition, trigger} from '@angular/animations';
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-group',
@@ -13,33 +13,18 @@ import {animate, animateChild, query, stagger, style, transition, trigger} from 
     styleUrls: ['./group.page.scss'],
 
     animations: [
-        trigger('profileList', [
+        trigger('profiles',[
             transition(':enter', [
-                query('@profileItems', stagger(300, animateChild()))
-            ]),
-        ]),
-        trigger('profileItems', [
-            transition('* <=> *', [
-
-                query(':enter', [
-                    style({transform: 'scale(0.5)', opacity: 0}),  // initial
-                    animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
-                        style({transform: 'scale(1)', opacity: 1}))  // final
-                ]),
-
-                query(':leave', [
-                    style({transform: 'scale(1)', opacity: 1, height: '*'}),
-                    animate('1s cubic-bezier(.8, -0.6, 0.2, 1.5)',
-                        style({
-                            transform: 'scale(0.5)', opacity: 0,
-                            height: '0px', margin: '0px'
-                        }))
-                ])
+                style({opacity: 0}),
+                animate('1500ms', style({opacity: 1}))
             ])
         ])
     ]
 })
 export class GroupPage implements OnInit {
+
+    EMPTY_ARRAY_5 = Array(5);
+    EMPTY_ARRAY_15 = Array(15);
 
     id: string;
     group: WebDto;
@@ -206,6 +191,6 @@ export class GroupPage implements OnInit {
         this.group.profiles.splice(this.group.profiles.indexOf(profile), 1);
         this.webService.removeFriend(this.id, fid).subscribe(() => {
         }, error => this.errorService.onNetworkError(error));
-    } 
+    }
 }
 

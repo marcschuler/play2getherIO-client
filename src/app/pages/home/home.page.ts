@@ -3,11 +3,24 @@ import {WebService} from "../../services/web.service";
 import {Router} from "@angular/router";
 import {Storage} from "@ionic/storage";
 import {ErrorService} from "../../services/error.service";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
+
+    animations: [
+        trigger('item',[
+            transition(':enter', [
+                style({opacity: 0}),
+                animate('1500ms', style({opacity: 1})),
+            ]),
+            transition(':leave', [
+                animate('1500ms', style({opacity: 0}))
+            ])
+        ])
+    ]
 })
 export class HomePage {
 

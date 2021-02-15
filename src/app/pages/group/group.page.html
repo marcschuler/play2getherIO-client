@@ -9,19 +9,24 @@
 
 <ion-content>
 
-    <div *ngIf="!group" class="ion-align-items-center" style="top:0;left: 0;width: 100%;height: 100%;background-color: #8884">
+    <!--<div *ngIf="!group" class="ion-align-items-center"
+         style="top:0;left: 0;width: 100%;height: 100%;background-color: #8884">
         <ion-spinner style="top:50%;left:50%"></ion-spinner>
-    </div>
+    </div>-->
 
-    <ion-grid *ngIf="group">
-
+    <ion-grid @profiles>
         <!-- Profiles in List -->
-        <ion-row @profileList>
-            <ion-col @profileItems *ngFor="let profile of group.profiles" size="auto" style="margin-top: 20px">
-                <div class="image-container" (click)="removeFriend(profile.id)" [tooltip]="profile.nickname" navTooltip>
+        <ion-row *ngIf="group" style="margin-top: 20px">
+            <ion-col *ngFor="let profile of group.profiles.reverse()" size="auto">
+                <div class="big-image-container" (click)="removeFriend(profile.id)" [tooltip]="profile.nickname" navTooltip>
                     <img [src]="profile.profileImageUrl" class="image">
                     <ion-icon name="remove-outline" class="plus-button"></ion-icon>
                 </div>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!group" style="margin-top: 20px">
+            <ion-col *ngFor="let i of EMPTY_ARRAY_5" size="auto">
+                <ion-skeleton-text class="image-container" animated></ion-skeleton-text>
             </ion-col>
         </ion-row>
 
@@ -50,13 +55,18 @@
         </ion-row>
 
         <!-- Friend Suggestions -->
-        <ion-row>
+        <ion-row *ngIf="friendSuggestions">
             <ion-col *ngFor="let profile of friendSuggestions" size="auto">
                 <div class="image-container" (click)="addFriendById(profile.id)" [tooltip]="profile.nickname"
                      navTooltip>
                     <img [src]="profile.profileImageUrl" class="image">
                     <ion-icon name="add-outline" class="plus-button"></ion-icon>
                 </div>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!friendSuggestions">
+            <ion-col *ngFor="let i of EMPTY_ARRAY_15" size="auto">
+                <ion-skeleton-text class="image-container" animated></ion-skeleton-text>
             </ion-col>
             <ion-col *ngIf="suggestionsAwaiting">
                 <ion-spinner></ion-spinner>
@@ -76,6 +86,7 @@
     </ion-card>
 
     <!-- Game List -->
+    <app-game-item-skeleton *ngFor="let i of (gameList?[]:EMPTY_ARRAY_5)"></app-game-item-skeleton>
     <app-game-item *ngFor="let item of gameList | slice:0:showNumber" [data]="group" [item]="item"></app-game-item>
     <ion-button *ngIf="showNumber<gameList.length" (click)="showNumber=showNumber+25" expand="full">
         <ion-icon name="chevron-down-outline"></ion-icon>

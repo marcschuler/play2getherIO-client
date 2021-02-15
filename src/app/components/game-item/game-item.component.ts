@@ -1,11 +1,24 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {GameListItem, Profile, WebDto} from "../../services/web.service";
 import {ColorService} from "../../services/color.service";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-game-item',
     templateUrl: './game-item.component.html',
     styleUrls: ['./game-item.component.scss'],
+
+    animations: [
+        trigger('item',[
+            transition(':enter', [
+                style({opacity: 0}),
+                animate('1500ms', style({opacity: 1})),
+            ]),
+            transition(':leave', [
+                animate('1500ms', style({opacity: 0}))
+            ])
+        ])
+    ]
 })
 export class GameItemComponent implements OnInit, OnChanges {
 

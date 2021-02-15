@@ -11,7 +11,7 @@
     <div class="grad01" style="padding-top: 50px">
         <div style="height: 200px;width:100%">
             <ion-spinner *ngIf="groupAwaiting" style="left:50%;top:90px"></ion-spinner>
-            <ion-icon *ngIf="!groupAwaiting" style="font-size: 144px;width:100%; margin-top: 30px"
+            <ion-icon @item *ngIf="!groupAwaiting" style="font-size: 144px;width:100%; margin-top: 30px"
                       name="game-controller-outline"></ion-icon>
 
         </div>
