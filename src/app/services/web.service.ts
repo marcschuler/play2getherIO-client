@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {ActivatedRoute} from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -12,10 +13,14 @@ export class WebService {
     // BASE_URL = "http://localhost:8080/v1/groups"
 
     constructor(private httpClient: HttpClient) {
-        if (!location.host.includes('play2gether.io')) {
+        if (new URLSearchParams(window.location.search).has("debug")) {
+            this.BASE_URL = 'http://localhost:3102/v1/groups' + this.BASE_URL
+            console.log("Started Debug Mode for " + this.BASE_URL)
+        } else if (!location.host.includes('play2gether.io')) {
             this.BASE_URL = 'https://play2gether.io' + this.BASE_URL;
             console.log('Activated Dev-Mode for ' + this.BASE_URL);
         }
+
     }
 
     public createGroup(groupSetupDto: GroupSetupDto): Observable<WebDto> {
