@@ -14,7 +14,7 @@ export class WebService {
 
     constructor(private httpClient: HttpClient) {
         if (new URLSearchParams(window.location.search).has("debug")) {
-            this.BASE_URL = 'http://localhost:3102/v1/groups' + this.BASE_URL
+            this.BASE_URL = 'http://localhost:3101/v1/groups';
             console.log("Started Debug Mode for " + this.BASE_URL)
         } else if (!location.host.includes('play2gether.io')) {
             this.BASE_URL = 'https://play2gether.io' + this.BASE_URL;
