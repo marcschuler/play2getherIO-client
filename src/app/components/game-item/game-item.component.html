@@ -8,8 +8,7 @@
             <img [src]="'https://cdn.cloudflare.steamstatic.com/steam/apps/'+item.game.id+'/header.jpg'">
         </ion-col>
         <ion-col size="7">
-            <h2><a [href]="'https://store.steampowered.com/app/' + item.game.id" target="_blank"
-                   style="text-decoration: none;color:var(--ion-text-color)">{{item.game.name}}</a></h2>
+            <h2>{{item.game.name}}</h2>
             <span *ngFor="let p of profiles">
                 <a [href]="p.profileUrl" target="_blank" [tooltip]="p.nickname" navTooltip> <img
                         [src]="p.profileImageUrl"

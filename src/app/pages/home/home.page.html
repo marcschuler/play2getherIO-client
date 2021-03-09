@@ -8,23 +8,29 @@
 
 <ion-content [fullscreen]="true" class="ion-no-margin ion-no-padding">
 
-    <div class="grad01" style="padding-top: 50px">
+    <div class="grad01" style="padding-top: 50px; padding-bottom: 50px">
         <div style="height: 200px;width:100%">
             <ion-spinner *ngIf="groupAwaiting" style="left:50%;top:90px"></ion-spinner>
             <ion-icon @item *ngIf="!groupAwaiting" style="font-size: 144px;width:100%; margin-top: 30px"
                       name="game-controller-outline"></ion-icon>
 
         </div>
+        <h2 class="ion-text-center">What games can you play together?</h2>
 
         <div style="width:100%;background-color: #00000088" class="ion-text-center ion-padding">
             <!--<strong>Ready to create an app?</strong>
             <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
-            <p style="color:#888">Enter your steam username to get started</p>
+            <p style="color:#888"><b>Enter your steam username to get started</b></p>
             <ion-input placeholder="Steam Nickname / Profile URL / ID" [(ngModel)]="steamId" minlength="3"
                        (keydown.enter)="createGroup()" style="color:#888" [disabled]="groupAwaiting"></ion-input>
             <ion-button (click)="createGroup()" [disabled]="groupAwaiting">Check Games</ion-button>
         </div>
-        <div style="height:100px"></div>
+        <div style="margin: 50px 10%">
+            <div style="background-color: var(--ion-background-color)"
+                 *ngFor="let exampleItem of exampleItems;let i=index" [ngStyle]="{opacity:(1-(i/4))}">
+                <app-game-item [item]="exampleItem" [data]="exampleDto" style="able" ></app-game-item>
+            </div>
+        </div>
     </div>
 
 
@@ -47,12 +53,14 @@
                 target="_blank">steam profile is public</a>
         </p>
         <br><br>
-        <h5>Q: I bought a game</h5>
-        <p>Due to caching we need up to fifteen minutes to update your game library</p>
+        <h5>Q: I bought a game recently</h5>
+        <p>Due to caching we need up to fifteen minutes to update your game library. It may take a few hours to update
+            other
+            profile changes</p>
         <br><br>
 
         <h5>Q: How many friends can I add?</h5>
-        <p>You can add up to fifteen friends to the group</p>
+        <p>You can compare up to 16 people including you.</p>
     </div>
 
 </ion-content>

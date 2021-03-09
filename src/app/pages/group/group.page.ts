@@ -13,7 +13,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
     styleUrls: ['./group.page.scss'],
 
     animations: [
-        trigger('profiles',[
+        trigger('profiles', [
             transition(':enter', [
                 style({opacity: 0}),
                 animate('1500ms', style({opacity: 1}))
@@ -85,7 +85,6 @@ export class GroupPage implements OnInit {
 
     ngOnInit() {
         this.id = this.route.snapshot.paramMap.get('gid');
-
         this.webService.getGroup(this.id).subscribe(data => {
             this.updateData(data);
             this.liveUpdate();
@@ -116,7 +115,7 @@ export class GroupPage implements OnInit {
             }).then(alert => alert.present());
             return;
         }
-        setTimeout(this.liveUpdate, 4000);
+        setTimeout(() => this.liveUpdate(), 4000);
         this.errorService.onNetworkError(error);
     }
 
@@ -129,6 +128,9 @@ export class GroupPage implements OnInit {
             console.log('Data is undefined');
             return;
         }
+        if (this.group != null && data.id !== this.group.id)
+            console.log("Warning: ID has changed from " + this.group.id + " to " + data.id);
+
         this.group = data;
 
         this.updateSuggestions();
