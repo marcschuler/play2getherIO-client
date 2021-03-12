@@ -57,6 +57,9 @@ export class HomePage {
             }, {
                 id: '400',
                 name: 'Garrys Mod'
+            }, {
+                id: '620',
+                name: 'Portal 2'
             }
         ],
         version: -1,
@@ -83,7 +86,7 @@ export class HomePage {
                 profileImageUrl: 'https://api.kwelo.com/v1/media/identicon/nichtdeingünther.png'
             },
             {
-                ownedGameIds: ['400'],
+                ownedGameIds: ['400', '620'],
                 nickname: 'Kevin',
                 id: null,
                 profileUrl: null,

@@ -28,7 +28,7 @@
         <div style="margin: 50px 10%">
             <div style="background-color: var(--ion-background-color)"
                  *ngFor="let exampleItem of exampleItems;let i=index" [ngStyle]="{opacity:(1-(i/4))}">
-                <app-game-item [item]="exampleItem" [data]="exampleDto" style="able" ></app-game-item>
+                <app-game-item [item]="exampleItem" [data]="exampleDto" ></app-game-item>
             </div>
         </div>
     </div>
@@ -45,6 +45,7 @@
                     href="https://support.ubisoft.com/en-GB/Article/000060565" target="_blank">How to get your steam
                 id</a></li>
         </ul>
+        <p>If your friend list is public you can select friends without entering a username</p>
 
         <br><br>
         <h5>Q: My user profile is private</h5>
@@ -60,7 +61,7 @@
         <br><br>
 
         <h5>Q: How many friends can I add?</h5>
-        <p>You can compare up to 16 people including you.</p>
+        <p>You can compare up to 16 people including you. If you have that many friends...</p>
     </div>
 
 </ion-content>
