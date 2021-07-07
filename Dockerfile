@@ -8,7 +8,7 @@ RUN npm install -g @ionic/cli
 COPY . .
 RUN npm run build
 
-FROM nginx:alpine
+FROM nginx:1.21-alpine
 COPY ./config/nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /usr/src/app/www /usr/share/nginx/html
